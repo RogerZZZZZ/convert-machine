@@ -4,6 +4,8 @@ import {
   isFun,
 } from '../libs/type'
 
+import match from './match'
+
 const extractData = (data, exp) => {
   const params = exp.split('.')
   let res = data
@@ -18,10 +20,15 @@ export const parser = {
     const strReg = /~\{(.*)\}/
     const result = {}
 
-    // TODO: function, object
+    // TODO: object
 
     if (isFun(data)) {
       result.functionMatch = data
+      return result
+    }
+
+    if (isObj(data)) {
+      result.objectMatch = data
       return result
     }
 
@@ -49,6 +56,11 @@ export const parser = {
 
     if (rules.functionMatch) {
       result = rules.functionMatch.call(this, data)
+      return result
+    }
+
+    if (rules.objectMatch) {
+      result = match.parse(data, rules.objectMatch)
       return result
     }
 

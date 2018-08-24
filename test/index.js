@@ -8,9 +8,9 @@ const params = {
 }
 
 /**
- * test for the object param
+ * test for the pattern param
  */
-test.serial('Object test', (t) => {
+test.serial('Pattern test', (t) => {
   const result = match.parse(params, {
     d: '~{a}',
     q: '~{c}'
@@ -30,8 +30,28 @@ test.serial('Function test', (t) => {
       return data.a + data.b
     }
   })
-  console.log(result)
   t.deepEqual(result, {
     q: 3,
+  })
+})
+
+/**
+ * test for object chain
+ */
+test.serial('Object test', (t) => {
+  const result = match.parse(params, {
+    obj: {
+      a: '~{a}',
+      b: function (data) {
+        return data.a + data.b
+      }
+    }
+  })
+  console.log(result)
+  t.deepEqual(result, {
+    obj: {
+      a: 1,
+      b: 3,
+    }
   })
 })
