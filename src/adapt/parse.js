@@ -1,6 +1,7 @@
 import {
   isObj,
   isStr,
+  isFun,
 } from '../libs/type'
 
 const extractData = (data, exp) => {
@@ -14,20 +15,25 @@ const extractData = (data, exp) => {
 
 export const parser = {
   parse: (data, key) => {
-    const strReg = /\~\{(.*)\}/
+    const strReg = /~\{(.*)\}/
     const result = {}
-  
-    //TODO: function, object
-  
+
+    // TODO: function, object
+
+    if (isFun(data)) {
+      result.functionMatch = data
+      return result
+    }
+
     if (!isStr(data)) {
       result.noMatch = data
       return result
     }
-  
+
     const matchResult = strReg.exec(data)
     if (matchResult) {
       result.patternMatch = true
-  
+
       const pattern = matchResult[1]
       if (pattern) result.pattern = pattern
       return result
@@ -36,15 +42,18 @@ export const parser = {
 
   assignData: (data, rules) => {
     let result
-    if (rules.noMatch) return
-
-    if (rules.patternMatch && rules.pattern) {
-      result = extractData(data, rules.pattern)
+    if (rules.noMatch) {
+      result = rules.noMatch
       return result
     }
 
-    if (rules.noMatch) {
-      result = rules.noMatch
+    if (rules.functionMatch) {
+      result = rules.functionMatch.call(this, data)
+      return result
+    }
+
+    if (rules.patternMatch && rules.pattern) {
+      result = extractData(data, rules.pattern)
       return result
     }
   }

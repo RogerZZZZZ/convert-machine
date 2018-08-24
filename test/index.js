@@ -1,5 +1,5 @@
 import test from 'ava'
-import match from '../src/match/match'
+import match from '../src/'
 
 const params = {
   a: 1,
@@ -15,9 +15,23 @@ test.serial('Object test', (t) => {
     d: '~{a}',
     q: '~{c}'
   })
-  console.log(result)
   t.deepEqual(result, {
     d: 1,
     q: 'a'
+  })
+})
+
+/**
+ * test for function param
+ */
+test.serial('Function test', (t) => {
+  const result = match.parse(params, {
+    q: function (data) {
+      return data.a + data.b
+    }
+  })
+  console.log(result)
+  t.deepEqual(result, {
+    q: 3,
   })
 })

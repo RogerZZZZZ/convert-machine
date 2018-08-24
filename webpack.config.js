@@ -11,7 +11,7 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, '/'),
-    filename: 'match.js',
+    filename: 'adapter.js',
   },
   resolve: {
   },
