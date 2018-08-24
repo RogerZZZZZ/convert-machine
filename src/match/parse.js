@@ -1,7 +1,7 @@
 import {
   isObj,
   isStr,
-} from 'LIBS/type'
+} from '../libs/type'
 
 const extractData = (data, exp) => {
   const params = exp.split('.')
