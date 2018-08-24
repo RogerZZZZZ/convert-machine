@@ -4,6 +4,10 @@ import {
   isFunction,
 } from '../libs/type'
 
+import {
+  appendArr,
+} from '../libs/helpers'
+
 import match from './match'
 
 const extractData = (data, exp) => {
@@ -17,11 +21,11 @@ const extractData = (data, exp) => {
 
 export const parser = {
   parse: (data, key) => {
-    const strReg = /~\{(.*)\}/
+    const patternReg = /~\{(.*)\}/
+    const strTokenReg = /(?:(.*?)(\|\||(?:&&)))|(.+)/gi
     const result = {}
 
     // TODO: handler the string issues
-    // TODO: handler the default value
 
     if (isFunction(data)) {
       result.functionMatch = data
@@ -38,14 +42,33 @@ export const parser = {
       return result
     }
 
-    const matchResult = strReg.exec(data)
-    if (matchResult) {
-      result.patternMatch = true
-
-      const pattern = matchResult[1]
-      if (pattern) result.pattern = pattern
+    if (!patternReg.test(data) && !strTokenReg.test(data)) {
+      // normal string
+      result.strMatch = data
       return result
     }
+
+    const paramsArr = []
+    let regResult = strTokenReg.exec(data)
+    while (regResult) {
+      const obj = {}
+      const splitSymbol = regResult[2]
+      if (splitSymbol) {
+        obj.splitSymbol = splitSymbol
+      }
+      const val = regResult[1] ? regResult[1] : regResult[0]
+
+      const isPattern = patternReg.exec(val)
+      if (isPattern) {
+        obj.value = isPattern[1]
+        regResult = strTokenReg.exec(data)
+        appendArr(obj, paramsArr)
+        continue
+      }
+    }
+
+    result.paramMatch = paramsArr
+    return result
   },
 
   assignData: (data, rules) => {
@@ -69,6 +92,25 @@ export const parser = {
       result = extractData(data, rules.pattern)
       return result
     }
+
+    if (rules.paramMatch) {
+      let index = 0
+      while (rules.paramMatch[index]) {
+        const param = rules.paramMatch[index]
+        const type = param.splitSymbol
+        if (type === '||') {
+          result = param.value
+        } else if (type === '&&') {
+
+        } else {
+
+        }
+      }
+    }
+
+    // handler the occasion of normal string
+    result = rules.strMatch
+    return result
   }
 }
 

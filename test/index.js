@@ -47,11 +47,24 @@ test.serial('Object test', (t) => {
       }
     }
   })
-  console.log(result)
   t.deepEqual(result, {
     obj: {
       a: 1,
       b: 3,
     }
+  })
+})
+
+/**
+ * test the exp has normal default string
+ */
+test.serial('Normal String test', (t) => {
+  const result = match.parse(params, {
+    name: '~{a}',
+    test: 'test',
+  })
+  t.deepEqual(result, {
+    name: 1,
+    test: 'test',
   })
 })
