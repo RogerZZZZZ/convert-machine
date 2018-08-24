@@ -1,6 +1,6 @@
 import { isObj } from '../libs/type'
 import { has } from '../libs/helpers'
-import parser from './parser'
+import parser from './parse'
 
 export const matchObject = function matchObject (data, obj) {
   const result = {}
@@ -20,5 +20,5 @@ const match = {
     return data
   },
 }
-console.log('1111')
+
 export default match

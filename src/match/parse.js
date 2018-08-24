@@ -50,4 +50,4 @@ export const parser = {
   }
 }
 
-export default parse
+export default parser
