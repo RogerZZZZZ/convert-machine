@@ -1,7 +1,7 @@
 import {
-  isObj,
-  isStr,
-  isFun,
+  isObject,
+  isString,
+  isFunction,
 } from '../libs/type'
 
 import match from './match'
@@ -20,19 +20,20 @@ export const parser = {
     const strReg = /~\{(.*)\}/
     const result = {}
 
-    // TODO: object
+    // TODO: handler the string issues
+    // TODO: handler the default value
 
-    if (isFun(data)) {
+    if (isFunction(data)) {
       result.functionMatch = data
       return result
     }
 
-    if (isObj(data)) {
+    if (isObject(data)) {
       result.objectMatch = data
       return result
     }
 
-    if (!isStr(data)) {
+    if (!isString(data)) {
       result.noMatch = data
       return result
     }

@@ -1,13 +1,36 @@
-export const isObj = obj => Object.prototype.toString.call(obj) === '[object Object]'
+const typeCheck = (obj, type) => {
+  return type === Object.prototype.toString.call(obj)
+}
 
-export const isFun = obj => Object.prototype.toString.call(obj) === '[object Function]'
+const isObject = obj => {
+  return typeCheck(obj, '[object Object]')
+}
 
-export const isArray = obj => Object.prototype.toString.call(obj) === '[object Array]'
+const isArray = obj => {
+  return typeCheck(obj, '[object Array]')
+}
 
-export const isStr = str => Object.prototype.toString.call(str) === '[object String]'
+const isFunction = obj => {
+  return typeCheck(obj, '[object Function]')
+}
 
-export const isNum = num => Object.prototype.toString.call(num) === '[object Number]'
+const isString = obj => {
+  return typeCheck(obj, '[object String]')
+}
 
-export const isEmptyObj = obj => JSON.stringify(obj) === '{}'
+const isNumber = obj => {
+  return typeCheck(obj, '[object Number]')
+}
 
-export const empty = obj => (obj === undefined);
+const objectIsEmpty = obj => {
+  return JSON.stringify(obj) === '{}'
+}
+
+module.exports = {
+  isObject,
+  isFunction,
+  isArray,
+  isString,
+  isNumber,
+  objectIsEmpty,
+}

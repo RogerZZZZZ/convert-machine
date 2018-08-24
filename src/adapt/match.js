@@ -1,4 +1,4 @@
-import { isObj } from '../libs/type'
+import { isObject } from '../libs/type'
 import { has } from '../libs/helpers'
 import parser from './parse'
 
@@ -14,7 +14,7 @@ export const matchObject = function matchObject (data, obj) {
 
 const match = {
   parse: (data, keys) => {
-    if (isObj(keys)) {
+    if (isObject(keys)) {
       return matchObject(data, keys)
     }
     return data
