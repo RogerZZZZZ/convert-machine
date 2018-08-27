@@ -5,6 +5,7 @@ const params = {
   a: 1,
   b: 2,
   c: 'a',
+  d: false
 }
 
 /**
@@ -66,5 +67,35 @@ test.serial('Normal String test', (t) => {
   t.deepEqual(result, {
     name: 1,
     test: 'test',
+  })
+})
+
+/**
+ * test for the ||
+ */
+test.serial('|| test', (t) => {
+  const result = match.parse(params, {
+    test1: '~{q} || 1',
+    test2: '~{a} || 2',
+  })
+  t.deepEqual(result, {
+    test1: '1',
+    test2: 1,
+  })
+})
+
+/**
+ * test for the &&
+ */
+test.serial('&& test', (t) => {
+  const result = match.parse(params, {
+    test1: '~{q} && 1',
+    test2: '~{a} && ~{d}',
+    test3: '~{a} && ~{b}'
+  })
+  t.deepEqual(result, {
+    test1: false,
+    test2: false,
+    test3: 2,
   })
 })
