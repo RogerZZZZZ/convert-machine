@@ -19,13 +19,42 @@ const extractData = (data, exp) => {
   return res
 }
 
+const expResolve = (data, arr) => {
+  let index = 0
+
+  const getData = (idx) => {
+    let result
+
+    if (arr[idx]) {
+      const val = resolveExp(arr[idx])
+      const split = arr[idx].split
+
+      if (split === '||') {
+        result = val === undefined ? getData(idx + 1) : val
+      } else if (split === '&&') {
+        result = val === undefined ? false : val && getData(idx + 1)
+      } else {
+        result = val
+      }
+    }
+    return result
+  }
+
+  const resolveExp = (item) => {
+    if (item.type === 'pattern') {
+      return extractData(data, item.value)
+    }
+    return item.value
+  }
+
+  return getData(index)
+}
+
 export const parser = {
   parse: (data, key) => {
     const patternReg = /~\{(.*)\}/
     const strTokenReg = /(?:(.*?)(\|\||(?:&&)))|(.+)/gi
     const result = {}
-
-    // TODO: handler the string issues
 
     if (isFunction(data)) {
       result.functionMatch = data
@@ -42,29 +71,30 @@ export const parser = {
       return result
     }
 
-    if (!patternReg.test(data) && !strTokenReg.test(data)) {
-      // normal string
-      result.strMatch = data
-      return result
-    }
-
-    const paramsArr = []
+    let paramsArr = []
     let regResult = strTokenReg.exec(data)
     while (regResult) {
       const obj = {}
-      const splitSymbol = regResult[2]
-      if (splitSymbol) {
-        obj.splitSymbol = splitSymbol
+      const split = regResult[2]
+
+      if (split) {
+        obj.split = split
       }
       const val = regResult[1] ? regResult[1] : regResult[0]
 
       const isPattern = patternReg.exec(val)
       if (isPattern) {
-        obj.value = isPattern[1]
+        obj.value = isPattern[1].trim()
+        obj.type = 'pattern'
         regResult = strTokenReg.exec(data)
-        appendArr(obj, paramsArr)
+        paramsArr = appendArr(obj, paramsArr)
         continue
       }
+
+      obj.value = val.trim()
+      paramsArr = appendArr(obj, paramsArr)
+      regResult = strTokenReg.exec(data)
+      continue
     }
 
     result.paramMatch = paramsArr
@@ -94,23 +124,10 @@ export const parser = {
     }
 
     if (rules.paramMatch) {
-      let index = 0
-      while (rules.paramMatch[index]) {
-        const param = rules.paramMatch[index]
-        const type = param.splitSymbol
-        if (type === '||') {
-          result = param.value
-        } else if (type === '&&') {
-
-        } else {
-
-        }
-      }
+      const arr = rules.paramMatch
+      result = expResolve(data, arr)
+      return result
     }
-
-    // handler the occasion of normal string
-    result = rules.strMatch
-    return result
   }
 }
 
