@@ -10,39 +10,42 @@ import {
 
 import match from './match'
 
-const extractData = (data, exp) => {
+const extract = (data, exp) => {
   const params = exp.split('.')
   let res = data
   params.forEach(item => {
     res = res[item]
   })
+
   return res
 }
 
-const expResolve = (data, arr) => {
+const expsResolve = (data, arr) => {
   let index = 0
 
   const getData = (idx) => {
     let result
 
     if (arr[idx]) {
-      const val = resolveExp(arr[idx])
+      const val = resolve(arr[idx])
+      const next = getData(idx + 1)
       const split = arr[idx].split
 
       if (split === '||') {
-        result = val === undefined ? getData(idx + 1) : val
+        result = val === undefined ? next : val
       } else if (split === '&&') {
-        result = val === undefined ? false : val && getData(idx + 1)
+        result = val === undefined ? false : val && next
       } else {
         result = val
       }
     }
+
     return result
   }
 
-  const resolveExp = (item) => {
+  const resolve = (item) => {
     if (item.type === 'pattern') {
-      return extractData(data, item.value)
+      return extract(data, item.value)
     }
     return item.value
   }
@@ -52,8 +55,8 @@ const expResolve = (data, arr) => {
 
 export const parser = {
   parse: (data, key) => {
-    const patternReg = /~\{(.*)\}/
-    const strTokenReg = /(?:(.*?)(\|\||(?:&&)))|(.+)/gi
+    const pattReg = /~\{(.*)\}/
+    const strReg = /(?:(.*?)(\|\||(?:&&)))|(.+)/gi
     const result = {}
 
     if (isFunction(data)) {
@@ -72,28 +75,28 @@ export const parser = {
     }
 
     let paramsArr = []
-    let regResult = strTokenReg.exec(data)
-    while (regResult) {
+    let rs = strReg.exec(data)
+    while (rs) {
       const obj = {}
-      const split = regResult[2]
+      const split = rs[2]
 
       if (split) {
         obj.split = split
       }
-      const val = regResult[1] ? regResult[1] : regResult[0]
+      const val = rs[1] ? rs[1] : rs[0]
 
-      const isPattern = patternReg.exec(val)
+      const isPattern = pattReg.exec(val)
       if (isPattern) {
         obj.value = isPattern[1].trim()
         obj.type = 'pattern'
-        regResult = strTokenReg.exec(data)
+        rs = strReg.exec(data)
         paramsArr = appendArr(obj, paramsArr)
         continue
       }
 
       obj.value = val.trim()
       paramsArr = appendArr(obj, paramsArr)
-      regResult = strTokenReg.exec(data)
+      rs = strReg.exec(data)
       continue
     }
 
@@ -101,7 +104,7 @@ export const parser = {
     return result
   },
 
-  assignData: (data, rules) => {
+  assign: (data, rules) => {
     let result
     if (rules.noMatch) {
       result = rules.noMatch
@@ -119,13 +122,13 @@ export const parser = {
     }
 
     if (rules.patternMatch && rules.pattern) {
-      result = extractData(data, rules.pattern)
+      result = extract(data, rules.pattern)
       return result
     }
 
     if (rules.paramMatch) {
       const arr = rules.paramMatch
-      result = expResolve(data, arr)
+      result = expsResolve(data, arr)
       return result
     }
   }

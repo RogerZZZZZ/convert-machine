@@ -5,7 +5,7 @@ export const matchObject = function matchObject (data, obj) {
   const result = {}
   for (let i in obj) {
     const rules = parser.parse(obj[i], i)
-    result[i] = parser.assignData(data, rules)
+    result[i] = parser.assign(data, rules)
   }
   return result
 }
