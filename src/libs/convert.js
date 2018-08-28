@@ -20,7 +20,7 @@ export const convert = function convert (raw, type) {
       res = Boolean(raw)
       break
     case 'String':
-    case 's|tring':
+    case 'string':
       res = raw.toString()
       break
     default:
