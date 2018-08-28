@@ -5,7 +5,8 @@ const params = {
   a: 1,
   b: 2,
   c: 'a',
-  d: false
+  d: false,
+  e: 2.1111,
 }
 
 /**
@@ -97,5 +98,25 @@ test.serial('&& test', (t) => {
     test1: false,
     test2: false,
     test3: 2,
+  })
+})
+
+/**
+ * test for type convert
+ */
+test.serial('type convert test', (t) => {
+  const result = match.parse(params, {
+    test1: '(Boolean) 1',
+    test2: '(Int) 2',
+    test3: '(Boolean) ~{a}',
+    test4: '(Int) ~{e}',
+    test5: '(String) ~{b}'
+  })
+  t.deepEqual(result, {
+    test1: true,
+    test2: 2,
+    test3: true,
+    test4: 2,
+    test5: '2',
   })
 })

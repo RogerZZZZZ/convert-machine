@@ -3,11 +3,12 @@ import {
   isString,
   isFunction,
 } from '../libs/type'
-
+import {
+  convert
+} from '../libs/convert'
 import {
   appendArr,
 } from '../libs/helpers'
-
 import match from './match'
 
 const extract = (data, exp) => {
@@ -44,10 +45,12 @@ const expsResolve = (data, arr) => {
   }
 
   const resolve = (item) => {
-    if (item.type === 'pattern') {
-      return extract(data, item.value)
+    let value = item.value
+    if (item.pattern) {
+      value = extract(data, value)
     }
-    return item.value
+    if (item.type) value = convert(value, item.type)
+    return value
   }
 
   return getData(index)
@@ -57,6 +60,7 @@ export const parser = {
   parse: (data, key) => {
     const pattReg = /~\{(.*)\}/
     const strReg = /(?:(.*?)(\|\||(?:&&)))|(.+)/gi
+    const typeReg = /\((.*)\)(.+)/
     const result = {}
 
     if (isFunction(data)) {
@@ -85,16 +89,22 @@ export const parser = {
       }
       const val = rs[1] ? rs[1] : rs[0]
 
-      const isPattern = pattReg.exec(val)
-      if (isPattern) {
-        obj.value = isPattern[1].trim()
-        obj.type = 'pattern'
-        rs = strReg.exec(data)
-        paramsArr = appendArr(obj, paramsArr)
-        continue
+      let value = val.trim()
+
+      const type = typeReg.exec(value)
+      if (type && type[1] && type[2]) {
+        value = type[2].trim()
+        obj.type = type[1].trim()
       }
 
-      obj.value = val.trim()
+      const isPattern = pattReg.exec(value)
+      if (isPattern) {
+        value = isPattern[1].trim()
+        obj.pattern = true
+      }
+
+      obj.value = value
+
       paramsArr = appendArr(obj, paramsArr)
       rs = strReg.exec(data)
       continue
