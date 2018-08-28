@@ -156,3 +156,25 @@ test.serial('array data test', (t) => {
     test4: '1 test',
   }])
 })
+
+/**
+ * test for math expression
+ */
+test.serial('math expression test', (t) => {
+  const result = match.parse(params, {
+    test1: ['${x * 2 + 1}', { x: '~{a}' }],
+    test2: ['${x * 2 + 1}', { x: '~{q} || (Int) 2' }],
+    test3: ['${(x + y) * z}', {
+      x: '~{a}',
+      y: '~{q} || (int) 5',
+      z: function (data) {
+        return data.a + data.b
+      }
+    }]
+  })
+  t.deepEqual(result, {
+    test1: 3,
+    test2: 5,
+    test3: 18,
+  })
+})
