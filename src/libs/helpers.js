@@ -8,7 +8,17 @@ const appendArr = (item, arr) => {
   return [item]
 }
 
+const mixObj = (args) => {
+  let res = {}
+  args.forEach(item => {
+    res = Object.assign(res, item)
+  })
+  
+  return res
+}
+
 module.exports = {
   has,
   appendArr,
+  mixObj,
 }

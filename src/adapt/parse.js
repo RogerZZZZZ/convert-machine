@@ -9,8 +9,12 @@ import {
 } from '../libs/convert'
 import {
   appendArr,
+  mixObj,
 } from '../libs/helpers'
 import match from './match'
+
+const MathParser = require('expr-eval').Parser
+const mathParser = new MathParser()
 
 const extract = (data, exp) => {
   const params = exp.split('.')
@@ -57,11 +61,20 @@ const expsResolve = (data, arr) => {
   return getData(index)
 }
 
+const objResolve = (obj, data) => {
+  for (let i in obj) {
+    const rule = parser.parse(obj[i], i)
+    obj[i] = parser.assign(data, rule)
+  }
+  return obj
+}
+
 export const parser = {
   parse: (data, key) => {
     const pattReg = /~\{(.*)\}/
     const strReg = /(?:(.*?)(\|\||(?:&&)))|(.+)/gi
     const typeReg = /\((.*)\)(.+)/
+    const mathReg = /\$\{(.*)\}/
     const result = {}
 
     if (isFunction(data)) {
@@ -69,6 +82,20 @@ export const parser = {
       return result
     }
 
+    if (isArray(data)) {
+      const expVal = data.shift()
+      const mathExp = mathReg.exec(expVal)
+      let exp = ''
+      let param = {}
+      if (mathExp && mathExp[1]) {
+        exp = mathExp[1]
+        param = mixObj([...data])
+      }
+      result.mathMatch = exp
+      result.param = param
+      return result
+    }
+    
     if (isObject(data)) {
       result.objectMatch = data
       return result
@@ -125,6 +152,12 @@ export const parser = {
     if (rules.functionMatch) {
       result = rules.functionMatch.call(this, data)
       return result
+    }
+
+    if (rules.mathMatch) {
+      return mathParser
+          .parse(rules.mathMatch)
+          .evaluate(objResolve(rules.param, data))
     }
 
     if (rules.objectMatch) {
