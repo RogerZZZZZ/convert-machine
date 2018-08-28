@@ -1,3 +1,5 @@
+import '../libs/polyfill'
+
 import { isObject } from '../libs/type'
 import parser from './parse'
 
