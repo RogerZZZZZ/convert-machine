@@ -1,22 +1,49 @@
 import '../libs/polyfill'
 
-import { isObject } from '../libs/type'
+import {
+  isObject,
+  isArray,
+} from '../libs/type'
 import parser from './parse'
 
-export const matchObject = function matchObject (data, obj) {
+const parseFun = function parseFun (obj) {
   const result = {}
   for (let i in obj) {
-    const rules = parser.parse(obj[i], i)
-    result[i] = parser.assign(data, rules)
+    result[i] = parser.parse(obj[i], i)
   }
+  return result
+}
+
+export const matchObject = function matchObject (data, parse) {
+  const result = {}
+  for (let i in parse) {
+    result[i] = parser.assign(data, parse[i])
+  }
+  return result
+}
+
+export const matchArray = function matchArray (arr, parse) {
+  let result = []
+  arr.forEach(item => {
+    result.push(matchObject(item, parse))
+  })
   return result
 }
 
 const match = {
   parse: (data, keys) => {
+
     if (isObject(keys)) {
-      return matchObject(data, keys)
+      const parse = parseFun(keys)
+      if (isArray(data)) {
+        return matchArray(data, parse)
+      }
+
+      if (isObject(data)) {
+        return matchObject(data, parse)
+      }
     }
+
     return data
   },
 }

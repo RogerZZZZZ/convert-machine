@@ -1,4 +1,5 @@
 import {
+  isArray,
   isObject,
   isString,
   isFunction,
