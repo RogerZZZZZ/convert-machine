@@ -13,7 +13,7 @@ const mixObj = (args) => {
   args.forEach(item => {
     res = Object.assign(res, item)
   })
-  
+
   return res
 }
 

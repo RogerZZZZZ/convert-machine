@@ -95,7 +95,7 @@ export const parser = {
       result.param = param
       return result
     }
-    
+
     if (isObject(data)) {
       result.objectMatch = data
       return result
@@ -156,8 +156,8 @@ export const parser = {
 
     if (rules.mathMatch) {
       return mathParser
-          .parse(rules.mathMatch)
-          .evaluate(objResolve(rules.param, data))
+        .parse(rules.mathMatch)
+        .evaluate(objResolve(rules.param, data))
     }
 
     if (rules.objectMatch) {
