@@ -1,3 +1,3 @@
-import match from './adapt/match'
+import match from './convert/match'
 
 export default match
