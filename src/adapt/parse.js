@@ -74,7 +74,7 @@ export const parser = {
     const pattReg = /~\{(.*)\}/
     const strReg = /(?:(.*?)(\|\||(?:&&)))|(.+)/gi
     const typeReg = /\((.*)\)(.+)/
-    const mathReg = /\$\{(.*)\}/
+    const mathReg = /#\{(.*)\}/
     const result = {}
 
     if (isFunction(data)) {
