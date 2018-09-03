@@ -49,7 +49,7 @@ const match = {
 
     return data
   },
-  config: (obj) => {
+  config(obj) {
     setConfig(obj)
     return this
   }

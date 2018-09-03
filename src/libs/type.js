@@ -27,7 +27,7 @@ const objectIsEmpty = obj => {
 }
 
 const isEmptyArray = arr => {
-  return this.isArray(arr) && JSON.stringify(arr) === '[]'
+  return isArray(arr) && JSON.stringify(arr) === '[]'
 }
 
 module.exports = {
