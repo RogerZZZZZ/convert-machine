@@ -1,10 +1,11 @@
 import '../libs/polyfill'
-
 import {
   isObject,
   isArray,
 } from '../libs/type'
 import parser from './parse'
+import { setConfig } from './config'
+import { filter } from './config-utils'
 
 const parseFun = function parseFun (obj) {
   const result = {}
@@ -17,7 +18,8 @@ const parseFun = function parseFun (obj) {
 export const matchObject = function matchObject (data, parse) {
   const result = {}
   for (let i in parse) {
-    result[i] = parser.assign(data, parse[i])
+    const val = parser.assign(data, parse[i])
+    if (filter(val)) result[i] = val
   }
   return result
 }
@@ -25,7 +27,8 @@ export const matchObject = function matchObject (data, parse) {
 export const matchArray = function matchArray (arr, parse) {
   let result = []
   arr.forEach(item => {
-    result.push(matchObject(item, parse))
+    const val = matchObject(item, parse)
+    if (filter(val)) result.push(val)
   })
   return result
 }
@@ -46,6 +49,10 @@ const match = {
 
     return data
   },
+  config: (obj) => {
+    setConfig(obj)
+    return this
+  }
 }
 
 export default match

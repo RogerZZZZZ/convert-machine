@@ -26,6 +26,10 @@ const objectIsEmpty = obj => {
   return JSON.stringify(obj) === '{}'
 }
 
+const isEmptyArray = arr => {
+  return this.isArray(arr) && JSON.stringify(arr) === '[]'
+}
+
 module.exports = {
   isObject,
   isFunction,
@@ -33,4 +37,5 @@ module.exports = {
   isString,
   isNumber,
   objectIsEmpty,
+  isEmptyArray,
 }
