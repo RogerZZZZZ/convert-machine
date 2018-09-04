@@ -4,6 +4,7 @@ import {
   isArray,
 } from '../libs/type'
 import parser from './parse'
+import assign from './assign'
 import { setConfig } from './config'
 import { filter } from './config-utils'
 
@@ -18,7 +19,7 @@ const parseFun = function parseFun (obj) {
 export const matchObject = function matchObject (data, parse) {
   const result = {}
   for (let i in parse) {
-    const val = parser.assign(data, parse[i])
+    const val = assign.parse(data, parse[i])
     if (filter(val)) result[i] = val
   }
   return result
@@ -35,7 +36,6 @@ export const matchArray = function matchArray (arr, parse) {
 
 const match = {
   parse: (data, keys) => {
-
     if (isObject(keys)) {
       const parse = parseFun(keys)
       if (isArray(data)) {
@@ -49,7 +49,7 @@ const match = {
 
     return data
   },
-  config(obj) {
+  config (obj) {
     setConfig(obj)
     return this
   }

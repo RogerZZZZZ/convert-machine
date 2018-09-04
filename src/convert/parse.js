@@ -5,69 +5,9 @@ import {
   isFunction,
 } from '../libs/type'
 import {
-  convert
-} from '../libs/convert'
-import {
   appendArr,
   mixObj,
 } from '../libs/helpers'
-import match from './match'
-
-const MathParser = require('expr-eval').Parser
-const mathParser = new MathParser()
-
-const extract = (data, exp) => {
-  const params = exp.split('.')
-  let res = data
-  params.forEach(item => {
-    res = res[item]
-  })
-
-  return res
-}
-
-const expsResolve = (data, arr) => {
-  let index = 0
-
-  const getData = (idx) => {
-    let result
-
-    if (arr[idx]) {
-      const val = resolve(arr[idx])
-      const next = getData(idx + 1)
-      const split = arr[idx].split
-
-      if (split === '||') {
-        result = val === undefined ? next : val
-      } else if (split === '&&') {
-        result = val === undefined ? false : val && next
-      } else {
-        result = val
-      }
-    }
-
-    return result
-  }
-
-  const resolve = (item) => {
-    let value = item.value
-    if (item.pattern) {
-      value = extract(data, value)
-    }
-    if (item.type) value = convert(value, item.type)
-    return value
-  }
-
-  return getData(index)
-}
-
-const objResolve = (obj, data) => {
-  for (let i in obj) {
-    const rule = parser.parse(obj[i], i)
-    obj[i] = parser.assign(data, rule)
-  }
-  return obj
-}
 
 export const parser = {
   parse: (data, key) => {
@@ -141,41 +81,6 @@ export const parser = {
     result.paramMatch = paramsArr
     return result
   },
-
-  assign: (data, rules) => {
-    let result
-    if (rules.noMatch) {
-      result = rules.noMatch
-      return result
-    }
-
-    if (rules.functionMatch) {
-      result = rules.functionMatch.call(this, data)
-      return result
-    }
-
-    if (rules.mathMatch) {
-      return mathParser
-        .parse(rules.mathMatch)
-        .evaluate(objResolve(rules.param, data))
-    }
-
-    if (rules.objectMatch) {
-      result = match.parse(data, rules.objectMatch)
-      return result
-    }
-
-    if (rules.patternMatch && rules.pattern) {
-      result = extract(data, rules.pattern)
-      return result
-    }
-
-    if (rules.paramMatch) {
-      const arr = rules.paramMatch
-      result = expsResolve(data, arr)
-      return result
-    }
-  }
 }
 
 export default parser
