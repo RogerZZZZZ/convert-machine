@@ -44,13 +44,15 @@ test.serial('Test for && operator', (t) => {
  */
 test.serial('Test for complex ocassion with logic operator', (t) => {
   const result = match.parse(params, {
-    t1: '~{q} || ~{z} || ~{a}',
-    t2: '~{q} || ~{a} && ~{b}',
+    // t1: '~{q} || ~{z} || ~{a}',
+    // t2: '~{q} || ~{a} && ~{b}',
     t3: '~{a} && ~{d} || ~{c}',
+    // t4: '~{q} || ~{a} || ~{z}',
   })
   t.deepEqual(result, {
-    t1: 1,
-    t2: 2,
+    // t1: 1,
+    // t2: 2,
     t3: 'a',
+    // t4: 1,
   })
 })

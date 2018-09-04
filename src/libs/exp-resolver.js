@@ -1,6 +1,5 @@
-import {
-  convert
-} from './convert'
+import { convert } from './convert'
+import { isTruthy } from './type'
 
 export const expsResolve = (data, arr) => {
   let index = 0
@@ -14,7 +13,7 @@ export const expsResolve = (data, arr) => {
       const split = arr[idx].split
 
       if (split === '||') {
-        result = val === undefined ? next : val
+        result = isTruthy(val) ? val : next
       } else if (split === '&&') {
         result = val === undefined ? false : val && next
       } else {
