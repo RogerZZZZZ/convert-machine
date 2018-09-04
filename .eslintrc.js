@@ -15,6 +15,7 @@ module.exports = {
   rules: {
     "comma-dangle": ["error", "only-multiline"],
     "no-var": "error",
+    "operator-linebreak": ["error", "before"],
   },
   globals: {
     logger:false
