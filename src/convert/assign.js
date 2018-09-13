@@ -17,39 +17,27 @@ const objResolve = (obj, data) => {
 }
 
 const assign = {
-  parse: (data, rules) => {
-    let result
-    if (rules.noMatch) {
-      result = rules.noMatch
-      return result
+  parse: (data, pattern) => {
+    const func = {
+      function: (d) => {
+        return d.call(this, data)
+      },
+      no: (d) => {
+        return d
+      },
+      math: (d) => {
+        return mathParser
+          .parse(d.exp)
+          .evaluate(objResolve(d.param, data))
+      },
+      object: (d) => {
+        return match.parse(data, d)
+      },
+      param: (d) => {
+        return expsResolve(data, d)
+      },
     }
-
-    if (rules.functionMatch) {
-      result = rules.functionMatch.call(this, data)
-      return result
-    }
-
-    if (rules.mathMatch) {
-      return mathParser
-        .parse(rules.mathMatch)
-        .evaluate(objResolve(rules.param, data))
-    }
-
-    if (rules.objectMatch) {
-      result = match.parse(data, rules.objectMatch)
-      return result
-    }
-
-    if (rules.patternMatch && rules.pattern) {
-      result = extract(data, rules.pattern)
-      return result
-    }
-
-    if (rules.paramMatch) {
-      const arr = rules.paramMatch
-      result = expsResolve(data, arr)
-      return result
-    }
+    return func[pattern.type](pattern.data)
   }
 
 }

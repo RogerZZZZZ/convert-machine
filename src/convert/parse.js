@@ -15,11 +15,15 @@ export const parser = {
     const strReg = /(?:(.*?)(\|\||(?:&&)))|(.+)/gi
     const typeReg = /\((.*)\)(.+)/
     const mathReg = /#\{(.*)\}/
-    const result = {}
+    const rt = {
+      type: '',
+      data: {},
+    }
 
     if (isFunction(data)) {
-      result.functionMatch = data
-      return result
+      rt.type = 'function'
+      rt.data = data
+      return rt
     }
 
     if (isArray(data)) {
@@ -31,19 +35,21 @@ export const parser = {
         exp = mathExp[1]
         param = mixObj([...data])
       }
-      result.mathMatch = exp
-      result.param = param
-      return result
+      rt.type = 'math'
+      rt.data = { exp, param }
+      return rt
     }
 
     if (isObject(data)) {
-      result.objectMatch = data
-      return result
+      rt.type = 'object'
+      rt.data = data
+      return rt
     }
 
     if (!isString(data)) {
-      result.noMatch = data
-      return result
+      rt.type = 'no'
+      rt.data = data
+      return rt
     }
 
     let paramsArr = []
@@ -77,9 +83,9 @@ export const parser = {
       rs = strReg.exec(data)
       continue
     }
-
-    result.paramMatch = paramsArr
-    return result
+    rt.type = 'param'
+    rt.data = paramsArr
+    return rt
   },
 }
 
