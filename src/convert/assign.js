@@ -1,6 +1,5 @@
 import {
   expsResolve,
-  extract
 } from '../libs/exp-resolver'
 import match from './match'
 import parser from './parse'
