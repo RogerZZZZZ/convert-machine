@@ -1,3 +1,17 @@
+import {
+  isObject,
+} from './type'
+
+const deepAssign = (target, obj) => {
+  for (let field in obj) {
+    if (has(target, field) && isObject(target[field]) && isObject(obj[field])) {
+      deepAssign(target[field], obj[field])
+    } else {
+      target[field] = obj[field]
+    }
+  }
+}
+
 const has = (obj, key) => ({}.hasOwnProperty.call(obj, key))
 
 const appendArr = (item, arr) => {
