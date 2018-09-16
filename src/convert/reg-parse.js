@@ -16,7 +16,6 @@ const buildRes = (type, data) => {
 }
 
 export const arrParser = (data) => {
-  console.log(data)
   const expVal = data.shift()
   const mathExp = mathReg.exec(expVal)
   let exp = ''

@@ -1,6 +1,6 @@
 const matched = x => ({
   on: () => matched(x),
-  default: fn => fn(x),
+  default: () => x,
 })
 
 export const pipeline = x => ({

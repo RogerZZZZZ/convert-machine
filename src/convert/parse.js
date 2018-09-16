@@ -15,16 +15,15 @@ export const parser = {
     const isNotString = (o) => (!isString(o))
 
     const res = pipeline(data)
-      .on(isFunction, d => ({type: 'function', d}))
+      .on(isFunction, d => ({type: 'function', data: d}))
 
       .on(isArray, arrParser)
 
-      .on(isObject, d => ({type: 'object', d}))
+      .on(isObject, d => ({type: 'object', data: d}))
 
-      .on(isNotString, d => ({type: 'no', d}))
+      .on(isNotString, d => ({type: 'no', data: d}))
 
       .default(paramParser)
-    console.log(res)
     return res
   },
 }
