@@ -1,30 +1,36 @@
+import { pipeline } from './condition-pipeline'
+
+const isInteger = (v) => v === 'Int'
+
+const isInt = (v) => v === 'int'
+
+const isFloat = (v) => {
+  return v === 'Float'
+        || v === 'float'
+        || v === 'Double'
+        || v === 'double'
+}
+
+const isBoolean = (v) => {
+  return v === 'Boolean'
+        || v === 'boolean'
+}
+
+const isString = (v) => {
+  return v === 'String'
+        || v === 'string'
+}
+
 export const convert = function convert (raw, type) {
-  let res
-  switch (type) {
-    case 'Int':
-      const val = parseInt(raw, 10)
+  return pipeline(type, raw)
+    .on(isInteger, d => {
+      const val = parseInt(d, 10)
       const isNaN = Number.isNaN(val)
-      res = isNaN ? 0 : val
-      break
-    case 'int':
-      res = parseInt(raw, 10)
-      break
-    case 'Float':
-    case 'float':
-    case 'Double':
-    case 'double':
-      res = parseFloat(raw, 10)
-      break
-    case 'Boolean':
-    case 'boolean':
-      res = Boolean(raw)
-      break
-    case 'String':
-    case 'string':
-      res = raw.toString()
-      break
-    default:
-      break
-  }
-  return res
+      return isNaN ? 0 : val
+    })
+    .on(isInt, d => parseInt(d))
+    .on(isFloat, d => parseFloat(d))
+    .on(isBoolean, d => Boolean(d))
+    .on(isString, d => d.toString())
+    .default(d => d.toString())
 }
