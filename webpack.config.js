@@ -11,7 +11,7 @@ module.exports = {
   ],
   output: {
     path: path.join(__dirname, '/dist/'),
-    filename: 'data-converter.js',
+    filename: 'convert-machine.js',
   },
   resolve: {
   },
@@ -32,6 +32,8 @@ module.exports = {
     }],
   },
   plugins: [
-    new UglifyJsPlugin(),
+    new UglifyJsPlugin({
+      sourceMap: true,
+    }),
   ],
 }

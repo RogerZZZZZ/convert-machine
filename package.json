@@ -1,5 +1,5 @@
 {
-  "name": "data-converter",
+  "name": "convert-machine",
   "version": "1.0.0",
   "description": "something helps you to adapter data",
   "scripts": {
@@ -33,9 +33,16 @@
       }
     }
   },
-  "author": "RogerZZZZ",
+  "author": "RogerZZZZZ",
   "license": "MIT",
-  "main": "./dist/match.js",
+  "main": "./dist/convert-machine.js",
+  "files": [
+    "dist/*",
+    "src/*",
+    "*.json",
+    "*.js",
+    "README.md"
+  ],
   "devDependencies": {
     "@babel/cli": "7.0.0-beta.51",
     "@babel/core": "7.0.0-beta.51",
@@ -52,10 +59,9 @@
     "ava": "1.0.0-beta.7",
     "babel-core": "^6.26.3",
     "babel-eslint": "8.2.1",
-    "babel-loader": "^8.0.0-beta.6",
+    "babel-loader": "^8.0.2",
     "babel-plugin-espower": "2.4.0",
     "babel-plugin-transform-runtime": "^6.23.0",
-    "cross-env": "^5.1.1",
     "eslint": "^4.3.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-loader": "^2.0.0",
