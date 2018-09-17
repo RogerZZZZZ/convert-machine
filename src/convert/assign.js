@@ -2,7 +2,10 @@ import {
   expsResolve,
   extract,
 } from '../libs/exp-resolver'
-import match from './match'
+import {
+  matchObject,
+  matchArray,
+} from './match'
 import parser from './parse'
 
 const MathParser = require('expr-eval').Parser
@@ -32,10 +35,10 @@ const assign = {
       },
       array: (d) => {
         const v = extract(data, chain)
-        return match.parse(v, d)
+        return matchArray(v, d)
       },
       object: (d) => {
-        return match.parse(data, d)
+        return matchObject(data, d)
       },
       param: (d) => {
         return expsResolve(data, d)

@@ -8,7 +8,7 @@ import assign from './assign'
 import { setConfig } from './config'
 import { filter } from './config-utils'
 
-const parseFun = function parseFun (obj) {
+export const parseFun = function parseFun (obj) {
   const result = {}
   for (let i in obj) {
     result[i] = parser.parse(obj[i], i)
@@ -16,7 +16,7 @@ const parseFun = function parseFun (obj) {
   return result
 }
 
-const matchObject = (data, parse, chain) => {
+export const matchObject = (data, parse, chain = []) => {
   const result = {}
   for (let i in parse) {
     const newChain = [].concat(chain)
@@ -27,7 +27,7 @@ const matchObject = (data, parse, chain) => {
   return result
 }
 
-const matchArray = (arr, parse, chain) => {
+export const matchArray = (arr, parse, chain = []) => {
   let result = []
   arr.forEach(item => {
     const val = matchObject(item, parse, chain)
@@ -37,15 +37,15 @@ const matchArray = (arr, parse, chain) => {
 }
 
 const match = {
-  parse: (data, keys, chain = []) => {
+  parse: (data, keys) => {
     if (isObject(keys)) {
       const parse = parseFun(keys)
       if (isArray(data)) {
-        return matchArray(data, parse, chain)
+        return matchArray(data, parse)
       }
 
       if (isObject(data)) {
-        return matchObject(data, parse, chain)
+        return matchObject(data, parse)
       }
     }
 

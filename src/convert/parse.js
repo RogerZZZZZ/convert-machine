@@ -10,6 +10,8 @@ import {
   paramParser,
 } from './reg-parse'
 
+import { parseFun } from './match'
+
 export const parser = {
   parse: (data, key) => {
     const isNotString = (o) => (!isString(o))
@@ -19,7 +21,7 @@ export const parser = {
 
       .on(isArray, arrParser)
 
-      .on(isObject, d => ({type: 'object', data: d}))
+      .on(isObject, d => ({type: 'object', data: parseFun(d)}))
 
       .on(isNotString, d => ({type: 'no', data: d}))
 

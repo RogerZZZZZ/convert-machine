@@ -2,6 +2,7 @@ import {
   appendArr,
   mixObj,
 } from '../libs/helpers'
+import { parseFun } from './match'
 
 const pattReg = /~\{(.*)\}/
 const strReg = /(?:(.*?)(\|\||(?:&&)))|(.+)/gi
@@ -29,7 +30,7 @@ export const arrParser = (data) => {
     }
     return buildRes('math', { exp, param })
   } else if (type === 'array') {
-    return buildRes('array', data[0])
+    return buildRes('array', parseFun(data[0]))
   }
 
   return buildRes('no', data[0])
