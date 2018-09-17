@@ -14,9 +14,9 @@ const params = {
  */
 test.serial('Test for math expression', (t) => {
   const result = match.parse(params, {
-    test1: ['#{x * 2 + 1}', { x: '~{a}' }],
-    test2: ['#{x * 2 + 1}', { x: '~{q} || (Int) 2' }],
-    test3: ['#{(x + y) * z}', {
+    test1: ['math', '#{x * 2 + 1}', { x: '~{a}' }],
+    test2: ['math', '#{x * 2 + 1}', { x: '~{q} || (Int) 2' }],
+    test3: ['math', '#{(x + y) * z}', {
       x: '~{a}',
       y: '~{q} || (int) 5',
       z: function (data) {

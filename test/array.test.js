@@ -1,38 +1,103 @@
 import test from 'ava'
 import match from '../src/'
 
-const arrParam = [{
+const param = {
   a: 1,
-  b: '2',
-  c: false,
-}, {
-  a: 2,
-  d: '1',
-  c: true
-}]
+  b: [{
+    c: 1,
+    d: 2,
+  }, {
+    c: 3,
+    d: 2,
+    e: 4,
+  }],
+  g: 10,
+}
+
+const param1 = {
+  b: [{
+    c: [{
+      q: 1,
+      w: 2,
+    }],
+    d: 2,
+  }, {
+    c: [{
+      q: 2,
+      w: 3,
+    }, {
+      q: 4,
+      w: 5,
+    }],
+    d: 2,
+    e: 4,
+  }],
+}
 
 /**
- * test for array data
+ * test for array field
  */
-test.serial('Test for array data', (t) => {
-  const result = match.parse(arrParam, {
-    test1: '~{a}',
-    test2: '(Boolean) ~{c}',
-    test3: '~{b}',
-    test4: function (data) {
-      const res = data.d ? data.d : ''
-      return res + ' test'
-    },
+test.serial('Test for array list field', (t) => {
+  const result = match.parse(param, {
+    a: '~{g}',
+    b: ['array', {
+      c: '~{c}',
+      d: '~{e}',
+      f: function (d) {
+        return d.c + d.d
+      },
+    }]
   })
-  t.deepEqual(result, [{
-    test1: 1,
-    test2: false,
-    test3: '2',
-    test4: ' test',
-  }, {
-    test1: 2,
-    test2: true,
-    test3: undefined,
-    test4: '1 test',
-  }])
+
+  t.deepEqual(result, {
+    a: 10,
+    b: [{
+      c: 1,
+      d: undefined,
+      f: 3,
+    }, {
+      c: 3,
+      d: 4,
+      f: 5,
+    }]
+  })
+})
+
+/**
+ * test for complex array field
+ */
+test.serial('Test for complex array list field', (t) => {
+  const result = match.parse(param1, {
+    b: ['array', {
+      d: '~{e}',
+      e: '~{d}',
+      c: ['array', {
+        q: '~{q}',
+        w: function (d) {
+          return d.q + d.w
+        }
+      }]
+    }]
+  })
+
+  t.deepEqual(result, {
+    b: [{
+      c: [{
+        q: 1,
+        w: 3,
+      }],
+      d: undefined,
+      e: 2,
+    }, {
+      c: [{
+        q: 2,
+        w: 5,
+      }, {
+        q: 4,
+        w: 9,
+      }],
+      d: 4,
+      e: 2,
+    }],
+  })
 })
