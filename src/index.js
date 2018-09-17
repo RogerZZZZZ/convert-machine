@@ -1,3 +1,3 @@
-import match from './convert/match'
+import * as converter from './convert/match'
 
-export default match
+export default converter
