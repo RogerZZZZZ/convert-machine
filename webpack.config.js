@@ -1,5 +1,5 @@
 const path = require('path')
-const webpack = require('webpack')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 const root = path.resolve(__dirname, './')
 
@@ -7,11 +7,11 @@ module.exports = {
   devtool: 'source-map',
 
   entry: [
-    'webpack-hot-middleware/client?quiet=true',
+    './src/index.js',
   ],
   output: {
-    path: path.join(__dirname, '/'),
-    filename: 'adapter.js',
+    path: path.join(__dirname, '/dist/'),
+    filename: 'data-converter.js',
   },
   resolve: {
   },
@@ -32,19 +32,6 @@ module.exports = {
     }],
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"',
-      },
-    }),
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin(),
+    new UglifyJsPlugin(),
   ],
-
-  devServer: {
-    contentBase: './src/',
-    port: 8001,
-    historyApiFallback: true,
-    inline: true,
-  },
 }
