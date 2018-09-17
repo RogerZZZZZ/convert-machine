@@ -67,9 +67,6 @@ test.serial('Test for parsing with customize config', (t) => {
  */
 test.serial('Test for remaining the unhandlered fields in array', (t) => {
   const result = converter.config({
-    ignoreEmptyValue: true,
-    ignoreEmptyArray: true,
-    ignoreEmptyObject: true,
     remainUnhandlered: true,
   }).parse(arrParam, {
     test: '~{a}',
@@ -92,9 +89,6 @@ test.serial('Test for remaining the unhandlered fields in array', (t) => {
  */
 test.serial('Test for remaining the unhandlered fields in object', (t) => {
   const result = converter.config({
-    ignoreEmptyValue: true,
-    ignoreEmptyArray: true,
-    ignoreEmptyObject: true,
     remainUnhandlered: true,
   }).parse(param, {
     test: '~{a}',
@@ -130,9 +124,6 @@ test.serial('Test for remaining the unhandlered fields in object', (t) => {
  */
 test.serial('Test for shortenDataChain config', (t) => {
   const result = converter.config({
-    ignoreEmptyValue: true,
-    ignoreEmptyArray: true,
-    ignoreEmptyObject: true,
     remainUnhandlered: true,
     shortenDataChain: true,
   }).parse(param, {
