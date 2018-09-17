@@ -13,6 +13,11 @@ const params = {
     d: 4,
     f: 5
   }],
+  f: {
+    i: {
+      z: 2
+    }
+  },
 }
 
 /**
@@ -21,6 +26,7 @@ const params = {
 test.serial('test for complex ocassion', (t) => {
   const result = converter.parse(params, {
     a: '~{a}',
+    a1: '~{f.i.z}',
 
     b: '(int) ~{g}',
 
@@ -41,6 +47,7 @@ test.serial('test for complex ocassion', (t) => {
 
   t.deepEqual(result, {
     a: 1,
+    a1: 2,
     b: 2,
     c: 2,
     d: 1,

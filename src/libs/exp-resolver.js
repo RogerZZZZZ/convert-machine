@@ -48,8 +48,8 @@ export const extract = (data, exp) => {
   }
   let res = data
   params.forEach(item => {
-    res = res[item]
     if (!res) return undefined
+    res = res[item]
   })
 
   return res
