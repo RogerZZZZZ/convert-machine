@@ -1,5 +1,6 @@
 import {
   expsResolve,
+  extract,
 } from '../libs/exp-resolver'
 import match from './match'
 import parser from './parse'
@@ -16,7 +17,7 @@ const objResolve = (obj, data) => {
 }
 
 const assign = {
-  parse: (data, pattern) => {
+  parse: (data, pattern, chain) => {
     const func = {
       function: (d) => {
         return d.call(this, data)
@@ -28,6 +29,10 @@ const assign = {
         return mathParser
           .parse(d.exp)
           .evaluate(objResolve(d.param, data))
+      },
+      array: (d) => {
+        const v = extract(data, chain)
+        return match.parse(v, d)
       },
       object: (d) => {
         return match.parse(data, d)

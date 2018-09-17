@@ -16,15 +16,23 @@ const buildRes = (type, data) => {
 }
 
 export const arrParser = (data) => {
-  const expVal = data.shift()
-  const mathExp = mathReg.exec(expVal)
-  let exp = ''
-  let param = {}
-  if (mathExp && mathExp[1]) {
-    exp = mathExp[1]
-    param = mixObj([...data])
+  const type = data.shift()
+
+  if (type === 'math') {
+    const expVal = data.shift()
+    const mathExp = mathReg.exec(expVal)
+    let exp = ''
+    let param = {}
+    if (mathExp && mathExp[1]) {
+      exp = mathExp[1]
+      param = mixObj([...data])
+    }
+    return buildRes('math', { exp, param })
+  } else if (type === 'array') {
+    return buildRes('array', data[0])
   }
-  return buildRes('math', { exp, param })
+
+  return buildRes('no', data[0])
 }
 
 export const paramParser = (data) => {

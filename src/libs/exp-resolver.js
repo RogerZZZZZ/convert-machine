@@ -1,5 +1,8 @@
 import { convert } from './convert'
-import { isTruthy } from './type'
+import {
+  isTruthy,
+  isArray,
+} from './type'
 
 export const expsResolve = (data, arr) => {
   let index = 0
@@ -37,10 +40,16 @@ export const expsResolve = (data, arr) => {
 }
 
 export const extract = (data, exp) => {
-  const params = exp.split('.')
+  let params
+  if (isArray(exp)) {
+    params = exp
+  } else {
+    params = exp.split('.')
+  }
   let res = data
   params.forEach(item => {
     res = res[item]
+    if (!res) return undefined
   })
 
   return res

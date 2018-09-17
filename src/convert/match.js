@@ -16,34 +16,36 @@ const parseFun = function parseFun (obj) {
   return result
 }
 
-export const matchObject = function matchObject (data, parse) {
+const matchObject = (data, parse, chain) => {
   const result = {}
   for (let i in parse) {
-    const val = assign.parse(data, parse[i])
+    const newChain = [].concat(chain)
+    newChain.push(i)
+    const val = assign.parse(data, parse[i], newChain)
     if (filter(val)) result[i] = val
   }
   return result
 }
 
-export const matchArray = function matchArray (arr, parse) {
+const matchArray = (arr, parse, chain) => {
   let result = []
   arr.forEach(item => {
-    const val = matchObject(item, parse)
+    const val = matchObject(item, parse, chain)
     if (filter(val)) result.push(val)
   })
   return result
 }
 
 const match = {
-  parse: (data, keys) => {
+  parse: (data, keys, chain = []) => {
     if (isObject(keys)) {
       const parse = parseFun(keys)
       if (isArray(data)) {
-        return matchArray(data, parse)
+        return matchArray(data, parse, chain)
       }
 
       if (isObject(data)) {
-        return matchObject(data, parse)
+        return matchObject(data, parse, chain)
       }
     }
 
