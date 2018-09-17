@@ -10,7 +10,7 @@ import {
   paramParser,
 } from './reg-parse'
 
-import { parseFun } from './match'
+import { parseFun } from './converter'
 
 export const parser = {
   parse: (data, key) => {

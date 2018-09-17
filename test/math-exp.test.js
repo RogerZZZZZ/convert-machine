@@ -1,5 +1,5 @@
 import test from 'ava'
-import match from '../src/'
+import converter from '../src/'
 
 const params = {
   a: 1,
@@ -13,7 +13,7 @@ const params = {
  * test for math expression
  */
 test.serial('Test for math expression', (t) => {
-  const result = match.parse(params, {
+  const result = converter.parse(params, {
     test1: ['math', '#{x * 2 + 1}', { x: '~{a}' }],
     test2: ['math', '#{x * 2 + 1}', { x: '~{q} || (Int) 2' }],
     test3: ['math', '#{(x + y) * z}', {

@@ -1,5 +1,5 @@
 import test from 'ava'
-import match from '../src/'
+import converter from '../src/'
 
 const params = {
   a: 1,
@@ -13,7 +13,7 @@ const params = {
  * test fot the value without type convert
  */
 test.serial('Test for value without type convert sign', (t) => {
-  const result = match.parse(params, {
+  const result = converter.parse(params, {
     t1: '1',
     t2: '~{a}'
   })
@@ -27,7 +27,7 @@ test.serial('Test for value without type convert sign', (t) => {
  * test for type convert
  */
 test.serial('Test for type convert', (t) => {
-  const result = match.parse(params, {
+  const result = converter.parse(params, {
     t1: '(Boolean) 1',
     t2: '(Int) 2',
     t3: '(Boolean) ~{a}',

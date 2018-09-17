@@ -40,7 +40,7 @@ export const matchArray = (arr, parse, chain = []) => {
   return result
 }
 
-const match = {
+const converter = {
   parse: (data, keys) => {
     let raw = cloneAny(data)
     let res
@@ -64,4 +64,4 @@ const match = {
   }
 }
 
-export default match
+export default converter

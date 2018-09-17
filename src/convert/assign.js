@@ -5,7 +5,7 @@ import {
 import {
   matchObject,
   matchArray,
-} from './match'
+} from './converter'
 import parser from './parse'
 import config from './config'
 

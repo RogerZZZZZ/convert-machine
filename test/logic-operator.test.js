@@ -1,5 +1,5 @@
 import test from 'ava'
-import match from '../src/'
+import converter from '../src/'
 
 const params = {
   a: 1,
@@ -13,7 +13,7 @@ const params = {
  * test for the ||
  */
 test.serial('Test for || operator', (t) => {
-  const result = match.parse(params, {
+  const result = converter.parse(params, {
     t1: '~{q} || 1',
     t2: '~{a} || 2',
   })
@@ -27,7 +27,7 @@ test.serial('Test for || operator', (t) => {
  * test for the &&
  */
 test.serial('Test for && operator', (t) => {
-  const result = match.parse(params, {
+  const result = converter.parse(params, {
     t1: '~{q} && 1',
     t2: '~{a} && ~{d}',
     t3: '~{a} && ~{b}'
@@ -43,7 +43,7 @@ test.serial('Test for && operator', (t) => {
  * test for the complex occasion
  */
 test.serial('Test for complex ocassion with logic operator', (t) => {
-  const result = match.parse(params, {
+  const result = converter.parse(params, {
     t1: '~{q} || ~{z} || ~{a}',
     t2: '~{q} || ~{a} && ~{b}',
     t3: '~{a} && ~{d} || ~{c}',

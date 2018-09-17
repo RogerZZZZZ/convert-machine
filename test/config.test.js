@@ -1,5 +1,5 @@
 import test from 'ava'
-import match from '../src/'
+import converter from '../src/'
 
 const arrParam = [{
   a: 1,
@@ -29,7 +29,7 @@ const param = {
  * test for parse with default config
  */
 test.serial('Test for parsing with defualt config', (t) => {
-  const result = match.parse(arrParam, {
+  const result = converter.parse(arrParam, {
     test1: '~{a}',
     test3: '~{b}',
   })
@@ -46,7 +46,7 @@ test.serial('Test for parsing with defualt config', (t) => {
  * test for basic config
  */
 test.serial('Test for parsing with customize config', (t) => {
-  const result = match.config({
+  const result = converter.config({
     ignoreEmptyValue: true,
     ignoreEmptyArray: true,
     ignoreEmptyObject: true,
@@ -66,7 +66,7 @@ test.serial('Test for parsing with customize config', (t) => {
  * test for remain unhandlered fields in array
  */
 test.serial('Test for remaining the unhandlered fields in array', (t) => {
-  const result = match.config({
+  const result = converter.config({
     ignoreEmptyValue: true,
     ignoreEmptyArray: true,
     ignoreEmptyObject: true,
@@ -91,7 +91,7 @@ test.serial('Test for remaining the unhandlered fields in array', (t) => {
  * test for remain unhandlered fields in object
  */
 test.serial('Test for remaining the unhandlered fields in object', (t) => {
-  const result = match.config({
+  const result = converter.config({
     ignoreEmptyValue: true,
     ignoreEmptyArray: true,
     ignoreEmptyObject: true,
@@ -129,7 +129,7 @@ test.serial('Test for remaining the unhandlered fields in object', (t) => {
  * test for shortenDataChain config
  */
 test.serial('Test for shortenDataChain config', (t) => {
-  const result = match.config({
+  const result = converter.config({
     ignoreEmptyValue: true,
     ignoreEmptyArray: true,
     ignoreEmptyObject: true,

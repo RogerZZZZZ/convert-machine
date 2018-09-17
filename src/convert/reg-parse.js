@@ -2,7 +2,7 @@ import {
   appendArr,
   mixObj,
 } from '../libs/helpers'
-import { parseFun } from './match'
+import { parseFun } from './converter'
 
 const pattReg = /~\{(.*)\}/
 const strReg = /(?:(.*?)(\|\||(?:&&)))|(.+)/gi

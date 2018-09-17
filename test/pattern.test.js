@@ -1,5 +1,5 @@
 import test from 'ava'
-import match from '../src/'
+import converter from '../src/'
 
 const params = {
   a: 1,
@@ -21,7 +21,7 @@ const arrParam = [{
  * test for the pattern param
  */
 test.serial('Test for the basic pattern', (t) => {
-  const result = match.parse(params, {
+  const result = converter.parse(params, {
     d: '~{a}',
     q: '~{c}'
   })
@@ -35,7 +35,7 @@ test.serial('Test for the basic pattern', (t) => {
  * test for complex object
  */
 test.serial('Test for the complex object', (t) => {
-  const result = match.parse(params, {
+  const result = converter.parse(params, {
     obj: {
       a: '~{a}',
       b: {
@@ -61,7 +61,7 @@ test.serial('Test for the complex object', (t) => {
  * test the exp has normal default string
  */
 test.serial('Test for the field with normal string value', (t) => {
-  const result = match.parse(params, {
+  const result = converter.parse(params, {
     name: '~{a}',
     test: 'test',
   })
@@ -75,7 +75,7 @@ test.serial('Test for the field with normal string value', (t) => {
  * test for function param
  */
 test.serial('Test for the function', (t) => {
-  const result = match.parse(params, {
+  const result = converter.parse(params, {
     q: function (data) {
       return data.a + data.b
     }
@@ -89,7 +89,7 @@ test.serial('Test for the function', (t) => {
  * test for array data
  */
 test.serial('Test for array data', (t) => {
-  const result = match.parse(arrParam, {
+  const result = converter.parse(arrParam, {
     test1: '~{a}',
     test2: '(Boolean) ~{c}',
     test3: '~{b}',

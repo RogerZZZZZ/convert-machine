@@ -1,5 +1,5 @@
 import test from 'ava'
-import match from '../src/'
+import converter from '../src/'
 
 const param = {
   a: 1,
@@ -38,7 +38,7 @@ const param1 = {
  * test for array field
  */
 test.serial('Test for array list field', (t) => {
-  const result = match.parse(param, {
+  const result = converter.parse(param, {
     a: '~{g}',
     b: ['array', {
       c: '~{c}',
@@ -67,7 +67,7 @@ test.serial('Test for array list field', (t) => {
  * test for complex array field
  */
 test.serial('Test for complex array list field', (t) => {
-  const result = match.parse(param1, {
+  const result = converter.parse(param1, {
     b: ['array', {
       d: '~{e}',
       e: '~{d}',
