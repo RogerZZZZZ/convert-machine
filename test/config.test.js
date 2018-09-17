@@ -14,6 +14,15 @@ const arrParam = [{
 const param = {
   a: 2,
   b: 11,
+  c: {
+    d: {
+      e: {
+        f: {
+          g: 2,
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -89,10 +98,65 @@ test.serial('Test for remaining the unhandlered fields in object', (t) => {
     remainUnhandlered: true,
   }).parse(param, {
     test: '~{a}',
+    c: {
+      d: {
+        e: {
+          f: {
+            z: '~{c.d.e.f.g}',
+          }
+        }
+      }
+    }
   })
   t.deepEqual(result, {
     test: 2,
     a: 2,
     b: 11,
+    c: {
+      d: {
+        e: {
+          f: {
+            g: 2,
+            z: 2,
+          }
+        }
+      }
+    }
+  })
+})
+
+/**
+ * test for shortenDataChain config
+ */
+test.serial('Test for shortenDataChain config', (t) => {
+  const result = match.config({
+    ignoreEmptyValue: true,
+    ignoreEmptyArray: true,
+    ignoreEmptyObject: true,
+    remainUnhandlered: true,
+    shortenDataChain: true,
+  }).parse(param, {
+    c: {
+      d: {
+        e: {
+          f: {
+            g: '~{g}'
+          }
+        }
+      }
+    }
+  })
+  t.deepEqual(result, {
+    a: 2,
+    b: 11,
+    c: {
+      d: {
+        e: {
+          f: {
+            g: 2,
+          }
+        }
+      }
+    }
   })
 })

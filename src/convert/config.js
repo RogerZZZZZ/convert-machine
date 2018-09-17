@@ -7,7 +7,7 @@ const config = {
   ignoreEmptyArray: false,
   ignoreEmptyObject: false,
   remainUnhandlered: false,
-  shortDataChain: false,
+  shortenDataChain: false,
 }
 
 export const setConfig = (obj) => {

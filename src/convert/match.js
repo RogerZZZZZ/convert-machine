@@ -43,19 +43,20 @@ export const matchArray = (arr, parse, chain = []) => {
 const match = {
   parse: (data, keys) => {
     let raw = cloneAny(data)
+    let res
     if (isObject(keys)) {
       const parse = parseFun(keys)
       if (isArray(data)) {
-        data = matchArray(data, parse)
+        res = matchArray(data, parse)
       } else if (isObject(data)) {
-        data = matchObject(data, parse)
+        res = matchObject(data, parse)
       }
     }
-    if (config.remainUnhandlered) {
-      deepAssign(raw, data)
-      return raw
+    if (config.remainUnhandlered && res) {
+      deepAssign(res, raw)
+      return res
     }
-    return data
+    return res || data
   },
   config (obj) {
     setConfig(obj)

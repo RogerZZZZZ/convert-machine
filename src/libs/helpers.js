@@ -10,10 +10,13 @@ const deepAssign = (target, obj) => {
     }
   } else if (isObject(target) && isObject(obj)) {
     for (let field in obj) {
-      if (has(target, field)
-        && ((isObject(target[field]) && isObject(obj[field]))
-            || (isArray(target[field]) && isArray(obj[field])))) {
-        deepAssign(target[field], obj[field])
+      if (((isObject(target[field]) && isObject(obj[field]))
+      || (isArray(target[field]) && isArray(obj[field])))) {
+        if (has(target, field)) {
+          deepAssign(target[field], obj[field])
+        } else {
+          target[field] = obj[field]
+        }
       } else {
         target[field] = obj[field]
       }
