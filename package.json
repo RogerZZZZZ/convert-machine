@@ -1,6 +1,6 @@
 {
   "name": "convert-machine",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "something helps you to adapter data",
   "scripts": {
     "dev:test": "webpack-dev-server --inline --hot --host 0.0.0.0",
