@@ -3,9 +3,13 @@ import {
   isObject,
   isArray,
 } from '../libs/type'
+import {
+  deepAssign,
+  cloneAny,
+} from '../libs/helpers'
 import parser from './parse'
 import assign from './assign'
-import { setConfig } from './config'
+import config, { setConfig } from './config'
 import { filter } from './config-utils'
 
 export const parseFun = function parseFun (obj) {
@@ -38,17 +42,19 @@ export const matchArray = (arr, parse, chain = []) => {
 
 const match = {
   parse: (data, keys) => {
+    let raw = cloneAny(data)
     if (isObject(keys)) {
       const parse = parseFun(keys)
       if (isArray(data)) {
-        return matchArray(data, parse)
-      }
-
-      if (isObject(data)) {
-        return matchObject(data, parse)
+        data = matchArray(data, parse)
+      } else if (isObject(data)) {
+        data = matchObject(data, parse)
       }
     }
-
+    if (config.remainUnhandlered) {
+      deepAssign(raw, data)
+      return raw
+    }
     return data
   },
   config (obj) {

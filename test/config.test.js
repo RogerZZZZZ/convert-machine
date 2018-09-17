@@ -11,6 +11,11 @@ const arrParam = [{
   c: true
 }]
 
+const param = {
+  a: 2,
+  b: 11,
+}
+
 /**
  * test for parse with default config
  */
@@ -32,7 +37,7 @@ test.serial('Test for parsing with defualt config', (t) => {
  * test for basic config
  */
 test.serial('Test for parsing with customize config', (t) => {
-  const result1 = match.config({
+  const result = match.config({
     ignoreEmptyValue: true,
     ignoreEmptyArray: true,
     ignoreEmptyObject: true,
@@ -40,10 +45,54 @@ test.serial('Test for parsing with customize config', (t) => {
     test1: '~{a}',
     test3: '~{b}',
   })
-  t.deepEqual(result1, [{
+  t.deepEqual(result, [{
     test1: 1,
     test3: '2',
   }, {
     test1: 2,
   }])
+})
+
+/**
+ * test for remain unhandlered fields in array
+ */
+test.serial('Test for remaining the unhandlered fields in array', (t) => {
+  const result = match.config({
+    ignoreEmptyValue: true,
+    ignoreEmptyArray: true,
+    ignoreEmptyObject: true,
+    remainUnhandlered: true,
+  }).parse(arrParam, {
+    test: '~{a}',
+  })
+  t.deepEqual(result, [{
+    test: 1,
+    a: 1,
+    b: '2',
+    c: false,
+  }, {
+    test: 2,
+    a: 2,
+    d: '1',
+    c: true,
+  }])
+})
+
+/**
+ * test for remain unhandlered fields in object
+ */
+test.serial('Test for remaining the unhandlered fields in object', (t) => {
+  const result = match.config({
+    ignoreEmptyValue: true,
+    ignoreEmptyArray: true,
+    ignoreEmptyObject: true,
+    remainUnhandlered: true,
+  }).parse(param, {
+    test: '~{a}',
+  })
+  t.deepEqual(result, {
+    test: 2,
+    a: 2,
+    b: 11,
+  })
 })
