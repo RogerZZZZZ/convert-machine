@@ -30,3 +30,15 @@ test.serial('Test for math expression', (t) => {
     test3: 18,
   })
 })
+
+/**
+ * test for parameter merging
+ */
+test.serial('Test for parameter merging', (t) => {
+  const result = converter.parse(params, {
+    test1: ['math', '#{x * 2 + y * z}', { x: '~{a}' }, { y: '~{b}' }, { z: '~{e}' }],
+  })
+  t.deepEqual(result, {
+    test1: 6.2222, // 1 * 2 + 2 * 2.1111
+  })
+})

@@ -1,7 +1,8 @@
 # Configuration
 
+#### Default configuration
+
 ```javascript
-// here is the default configuration.
 const config = {
   // ignore the field if its value is null of undefined.
   ignoreEmptyValue: false,
@@ -16,8 +17,9 @@ const config = {
 }
 ```
 
+#### Support to inject own configuration
+
 ```javascript
-// support user to DIY the config
 import converter from '../src/'
 
 converter.config({
@@ -27,53 +29,63 @@ converter.config({
 }).parse(/**...*/)
 ```
 
+#### Parse with default configuration
+
 ```javascript
-// Parsing with default config
 const arrParam = [{
   a: 1,
   b: '2',
-  c: false,
+  c: [],
+  d: {},
 }, {
   a: 2,
-  d: '1',
-  c: true
 }]
 
 const result = converter.parse(arrParam, {
   test1: '~{a}',
-  test3: '~{b}',
+  test2: '~{b}',
+  test3: '~{c}',
+  test4: '~{d}',
 })
 
 // result
 [{
   test1: 1,
-  test3: '2',
+  test2: '2',
+  test3: [],
+  test4: {},
 }, {
   test1: 2,
+  test2: undefined,
   test3: undefined,
+  test4: undefined,
 }]
+```
 
-// Parsing with ignoreEmpty* config
+#### ignoreEmpty*
+
+```javascript
 const result1 = converter.config({
   ignoreEmptyValue: true,
   ignoreEmptyArray: true,
   ignoreEmptyObject: true,
 }).parse(arrParam, {
   test1: '~{a}',
-  test3: '~{b}',
+  test2: '~{b}',
 })
 
 // result1
 [{
   test1: 1,
-  test3: '2',
+  test2: '2',
 }, {
   test1: 2,
 }]
 ```
 
+#### remainUnhandlered
+
 ```javascript
-// Support to remain unhandlered fields
 const arrParam = [{
   a: 1,
   b: '2',
@@ -104,8 +116,9 @@ const result = converter.config({
 }]
 ```
 
+#### shortenDataChain
+
 ```javascript
-// Support to shorten the property access chain
 const param = {
   a: 2,
   b: 11,

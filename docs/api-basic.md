@@ -4,6 +4,8 @@
 import converter from '../src/'
 ```
 
+#### Basic feature
+
 ```javascript
 const params = {
   a: 1,
@@ -33,8 +35,9 @@ const result = converter.parse(params, {
 }
 ```
 
+#### Support basic value assignment
+
 ```javascript
-// if the value is just plain text, then assign the text value to field.
 const params = {
   a: 1,
 }
@@ -51,14 +54,16 @@ const result = converter.parse(params, {
 }
 ```
 
+#### Support function
+
 ```javascript
-// Support function. The parameter 'data' in function is the raw data sources. i.e 'params' in this case.
 const params = {
   a: 1,
   b: 2,
 }
 
 const result = converter.parse(params, {
+  // data is actually the raw data sources - params
   q: function (data) {
     return data.a + data.b
   }
@@ -70,8 +75,9 @@ const result = converter.parse(params, {
 }
 ```
 
+#### Support array data
+
 ```javascript
-// if the data is an array
 const arrParam = [{
   a: 1,
   b: '2',

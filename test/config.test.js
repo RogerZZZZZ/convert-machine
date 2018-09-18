@@ -11,6 +11,15 @@ const arrParam = [{
   c: true
 }]
 
+const arrParam1 = [{
+  a: 1,
+  b: '2',
+  c: [],
+  d: {},
+}, {
+  a: 2,
+}]
+
 const param = {
   a: 2,
   b: 11,
@@ -29,16 +38,22 @@ const param = {
  * test for parse with default config
  */
 test.serial('Test for parsing with defualt config', (t) => {
-  const result = converter.parse(arrParam, {
+  const result = converter.parse(arrParam1, {
     test1: '~{a}',
-    test3: '~{b}',
+    test2: '~{b}',
+    test3: '~{c}',
+    test4: '~{d}',
   })
   t.deepEqual(result, [{
     test1: 1,
-    test3: '2',
+    test2: '2',
+    test3: [],
+    test4: {},
   }, {
     test1: 2,
+    test2: undefined,
     test3: undefined,
+    test4: undefined,
   }])
 })
 
@@ -52,11 +67,11 @@ test.serial('Test for parsing with customize config', (t) => {
     ignoreEmptyObject: true,
   }).parse(arrParam, {
     test1: '~{a}',
-    test3: '~{b}',
+    test2: '~{b}',
   })
   t.deepEqual(result, [{
     test1: 1,
-    test3: '2',
+    test2: '2',
   }, {
     test1: 2,
   }])
