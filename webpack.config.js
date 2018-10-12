@@ -1,6 +1,6 @@
 const path = require('path')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-
+const webpack = require('webpack')
 const root = path.resolve(__dirname, './')
 
 module.exports = {
@@ -35,5 +35,6 @@ module.exports = {
     new UglifyJsPlugin({
       sourceMap: true,
     }),
+    new webpack.NoEmitOnErrorsPlugin()
   ],
 }

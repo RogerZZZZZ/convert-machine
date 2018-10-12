@@ -4,7 +4,7 @@
   "description": "One small tool for you to convert data into what you really need.",
   "homepage": "https://github.com/RogerZZZZZ/data-converter",
   "scripts": {
-    "build": "webpack --config webpack.config.js",
+    "build": "node build/index.js",
     "lint": "eslint --fix src/",
     "test": "ava test/*.js --verbose"
   },
@@ -77,7 +77,10 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "uglifyjs-webpack-plugin": "^1.2.4",
-    "webpack": "^3.6.0"
+    "webpack": "^3.6.0",
+    "ora": "^3.0.0",
+    "shelljs": "^0.8.2",
+    "webpack-merge": "^4.1.4"
   },
   "dependencies": {
     "expr-eval": "^1.2.2"
