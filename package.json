@@ -1,6 +1,6 @@
 {
   "name": "convert-machine",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "One small tool for you to convert data into what you really need.",
   "homepage": "https://github.com/RogerZZZZZ/data-converter",
   "scripts": {

@@ -4,6 +4,12 @@ This simple lib is designed for you to convert the raw data into the format you 
 
 [Project repo](https://github.com/RogerZZZZZ/convert-machine)
 
+## API docs
+
+There are more api that are given by this lib. 
+
+[docs link](https://rogerzzzzz.github.io/convert-machine/)
+
 ## Quick Start
 
 ### Installation
@@ -27,7 +33,7 @@ $ npm test
 **Basic methods**
 
 ```javascript
-import converter from '../src/'
+import converter from 'convert-machine'
 
 const params = {
   a: 1,
@@ -137,12 +143,6 @@ const param = {
   }
 }
 ```
-
-## API docs
-
-There are more api that are given by this lib. 
-
-[docs link](https://rogerzzzzz.github.io/convert-machine/)
 
 ## Finally
 If there is any question or bug during you using it. Please feel free to ask me or just create a issue.
